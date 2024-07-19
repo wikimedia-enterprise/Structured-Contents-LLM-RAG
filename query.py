@@ -90,7 +90,7 @@ def query(prompt, db):
 #-------Part 3: Streamlit Web Chat -------
 def main():
   # Page configuration
-  st.set_page_config(page_title="Wikipedia Enterprise - Sample Dataset RAG", layout="wide")
+  st.set_page_config(page_title="Wikipedia Enterprise - Sample Dataset RAG")
 
   # Create containers
   header = st.container()
