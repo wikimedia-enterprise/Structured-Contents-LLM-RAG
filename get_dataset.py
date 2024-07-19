@@ -14,11 +14,10 @@ from concurrent.futures import ThreadPoolExecutor
 # Load environment variables
 load_dotenv()
 
-# Setup a HTTP session with retries
+# Setup an HTTP session with retries
 session = requests.Session()
 retries = Retry(total=5, backoff_factor=0.1)  # Retry up to 5 times with a backoff factor
 session.mount('http://', HTTPAdapter(max_retries=retries))
-
 
 # Function to login and get the bearer token
 def get_bearer_token():
@@ -29,6 +28,7 @@ def get_bearer_token():
   # Try to fetch the access token
   try:
     response = session.post(url, json={"username": username, "password": password}, timeout=5)
+    response.raise_for_status()
     data = response.json()
     return data['access_token']
 
@@ -49,6 +49,7 @@ def fetch_article(title, token):
   # Try to fetch the article data
   try:
     response = session.post(url, json={"fields": ["identifier", "url", "name", "article_sections"], "filters": [{"field":"is_part_of.identifier", "value":"enwiki"}]}, headers=headers, timeout=10)
+    response.raise_for_status()
     article_data = response.json()
 
     return article_data
@@ -104,8 +105,8 @@ def pipelineV1(file_path, output_file_path):
     if not items or not isinstance(items, list):
       continue
 
-    article = items[0] # We only want the first article
-    if 'article_sections' in article :
+    article = items[0]  # We only want the first article
+    if 'article_sections' in article:
       cleaned_text = clean_text(article['article_sections'])
       articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
 
@@ -126,20 +127,20 @@ def pipelineV2(file_path, output_file_path):
       return
 
     article = items[0]  # We only want the first article
-    if 'article_sections' in article :
+    if 'article_sections' in article:
       cleaned_text = clean_text(article['article_sections'])
       # Lock the shared resource, append the result, then unlock
       with lock:
         articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
 
-    # Create a ThreadPoolExecutor to manage a pool of threads
-    cores = os.cpu_count() * 3  # Use twice the number of CPU cores
-    with ThreadPoolExecutor(max_workers=cores) as executor:
-      # Use tqdm for progress bar in threading context
-      list(tqdm(executor.map(process_article, titles), total=len(titles), desc="Downloading and cleaning Wikipedia articles"))
+  # Create a ThreadPoolExecutor to manage a pool of threads
+  cores = os.cpu_count() * 3  # Use twice the number of CPU cores
+  with ThreadPoolExecutor(max_workers=cores) as executor:
+    # Use tqdm for progress bar in threading context
+    list(tqdm(executor.map(process_article, titles), total=len(titles), desc="Downloading and cleaning Wikipedia articles"))
 
-    # Save to CSV
-    save_to_csv(articles, output_file_path)
+  # Save to CSV
+  save_to_csv(articles, output_file_path)
 
 
 if __name__ == '__main__':
