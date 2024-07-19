@@ -98,7 +98,7 @@ streamlit run query.py
 
 13. Now re-run the `query.py` and it will start a Streamlit Web app:
 ```
-python query.py
+streamlit run query.py
 ```
 
 
