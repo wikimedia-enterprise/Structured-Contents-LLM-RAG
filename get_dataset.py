@@ -114,45 +114,45 @@ def pipelineV1(file_path, output_file_path):
 
 
 def pipelineV2(file_path, output_file_path):
-    titles = read_titles_from_csv(file_path)
-    token = get_bearer_token()
-    articles = []
-    lock = threading.Lock()  # Create a lock for thread-safe appends to the articles list
+  titles = read_titles_from_csv(file_path)
+  token = get_bearer_token()
+  articles = []
+  lock = threading.Lock()  # Create a lock for thread-safe appends to the articles list
 
-    # Define a function that each thread will execute
-    def process_article(title):
-        items = fetch_article(title, token)
-        if not items or not isinstance(items, list):
-            return
+  # Define a function that each thread will execute
+  def process_article(title):
+    items = fetch_article(title, token)
+    if not items or not isinstance(items, list):
+      return
 
-        article = items[0]  # We only want the first article
-        if 'article_sections' in article :
-            cleaned_text = clean_text(article['article_sections'])
-            # Lock the shared resource, append the result, then unlock
-            with lock:
-                articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
+    article = items[0]  # We only want the first article
+    if 'article_sections' in article :
+      cleaned_text = clean_text(article['article_sections'])
+      # Lock the shared resource, append the result, then unlock
+      with lock:
+        articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
 
     # Create a ThreadPoolExecutor to manage a pool of threads
     cores = os.cpu_count() * 3  # Use twice the number of CPU cores
     with ThreadPoolExecutor(max_workers=cores) as executor:
-        # Use tqdm for progress bar in threading context
-        list(tqdm(executor.map(process_article, titles), total=len(titles), desc="Downloading and cleaning Wikipedia articles"))
+      # Use tqdm for progress bar in threading context
+      list(tqdm(executor.map(process_article, titles), total=len(titles), desc="Downloading and cleaning Wikipedia articles"))
 
     # Save to CSV
     save_to_csv(articles, output_file_path)
 
 
 if __name__ == '__main__':
-    # Get the absolute path of the directory containing the script
-    dir_path = os.path.dirname(os.path.abspath(__file__))
+  # Get the absolute path of the directory containing the script
+  dir_path = os.path.dirname(os.path.abspath(__file__))
 
-    # Properly join paths with the directory path
-    inputFile = os.path.join(dir_path, 'dataset', 'titles_en.csv')
-    outputV1 = os.path.join(dir_path, 'dataset', 'en2.csv')
-    outputV2 = os.path.join(dir_path, 'dataset', 'en3.csv')
+  # Properly join paths with the directory path
+  inputFile = os.path.join(dir_path, 'dataset', 'titles_en.csv')
+  outputV1 = os.path.join(dir_path, 'dataset', 'en2.csv')
+  outputV2 = os.path.join(dir_path, 'dataset', 'en3.csv')
 
-    # Run the pipeline sequentially
-    #pipelineV1(inputFile, outputV1)  # 1 thread took 9 minutes
+  # Run the pipeline sequentially
+  #pipelineV1(inputFile, outputV1)  # 1 thread took 9 minutes
 
-    # Run the pipeline with threading
-    pipelineV2(inputFile, outputV2)   # 24 threads took 35 seconds
+  # Run the pipeline with threading
+  pipelineV2(inputFile, outputV2)   # 24 threads took 35 seconds
