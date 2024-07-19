@@ -22,95 +22,95 @@ session.mount('http://', HTTPAdapter(max_retries=retries))
 
 # Function to login and get the bearer token
 def get_bearer_token():
-    url = "https://auth.enterprise.wikimedia.com/v1/login"
-    username = os.getenv('WIKI_API_USERNAME')
-    password = os.getenv('WIKI_API_PASSWORD')
+  url = "https://auth.enterprise.wikimedia.com/v1/login"
+  username = os.getenv('WIKI_API_USERNAME')
+  password = os.getenv('WIKI_API_PASSWORD')
 
-    # Try to fetch the access token
-    try:
-        response = session.post(url, json={"username": username, "password": password}, timeout=5)
-        data = response.json()
-        return data['access_token']
+  # Try to fetch the access token
+  try:
+    response = session.post(url, json={"username": username, "password": password}, timeout=5)
+    data = response.json()
+    return data['access_token']
 
-    except requests.exceptions.ConnectionError:
-        print("Connection error occurred")
-    except requests.exceptions.Timeout:
-        print("Request timed out")
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
+  except requests.exceptions.ConnectionError:
+    print("Connection error occurred")
+  except requests.exceptions.Timeout:
+    print("Request timed out")
+  except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
 
-    return ""
+  return ""
 
 # Function to fetch article data from Wikipedia
 def fetch_article(title, token):
-    url = f"https://api.enterprise.wikimedia.com/v2/structured-contents/{title.replace(' ', '_')}"
-    headers = {'Authorization': f'Bearer {token}'}
+  url = f"https://api.enterprise.wikimedia.com/v2/structured-contents/{title.replace(' ', '_')}"
+  headers = {'Authorization': f'Bearer {token}'}
 
-    # Try to fetch the article data
-    try:
-        response = session.post(url, json={"fields": ["identifier", "url","name", "article_sections"], "filters": [{"field":"is_part_of.identifier", "value":"enwiki"}]}, headers=headers, timeout=10)
-        article_data = response.json()
+  # Try to fetch the article data
+  try:
+    response = session.post(url, json={"fields": ["identifier", "url", "name", "article_sections"], "filters": [{"field":"is_part_of.identifier", "value":"enwiki"}]}, headers=headers, timeout=10)
+    article_data = response.json()
 
-        return article_data
+    return article_data
 
-    except requests.exceptions.ConnectionError:
-        print("Connection error occurred")
-    except requests.exceptions.Timeout:
-        print("Request timed out")
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
+  except requests.exceptions.ConnectionError:
+    print("Connection error occurred")
+  except requests.exceptions.Timeout:
+    print("Request timed out")
+  except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
 
-    return ""
+  return ""
 
 def clean_text(article_data):
-    result = []
+  result = []
 
-    # Iterate through each section in the article data
-    for section in article_data:
-        # Retrieve and concatenate the name and value of each section and its paragraphs
-        if 'has_parts' in section:
-            if 'name' in section:
-                result.append(f"{section['name']}.")
+  # Iterate through each section in the article data
+  for section in article_data:
+    # Retrieve and concatenate the name and value of each section and its paragraphs
+    if 'has_parts' in section:
+      if 'name' in section:
+        result.append(f"{section['name']}.")
 
-            for part in section['has_parts']:
-                if 'value' in part:
-                    result.append(f"{part['value']}")
+      for part in section['has_parts']:
+        if 'value' in part:
+          result.append(f"{part['value']}")
 
-    # Join all elements in the result list with a space as separator
-    return ' '.join(result)
+  # Join all elements in the result list with a space as separator
+  return ' '.join(result)
 
 
 # Reading CSV to get article titles
 def read_titles_from_csv(file_path):
-    df = pd.read_csv(file_path)
-    return df.iloc[:, 2].tolist()  # Assuming the third column contains titles
+  df = pd.read_csv(file_path)
+  return df.iloc[:, 2].tolist()  # Assuming the third column contains titles
 
 
 # Function to save articles information to a CSV file
 def save_to_csv(articles_info, output_file_path):
-    # Create a DataFrame from the list of tuples
-    df = pd.DataFrame(articles_info, columns=['Identifier', 'URL', 'Title', 'Cleaned Text'])
-    # Save the DataFrame to a CSV file
-    df.to_csv(output_file_path, index=False, header=False)
+  # Create a DataFrame from the list of tuples
+  df = pd.DataFrame(articles_info, columns=['Identifier', 'URL', 'Title', 'Cleaned Text'])
+  # Save the DataFrame to a CSV file
+  df.to_csv(output_file_path, index=False, header=False)
 
 # Integration into the main function
 def pipelineV1(file_path, output_file_path):
-     titles = read_titles_from_csv(file_path)
-     token = get_bearer_token()
-     articles = []
+  titles = read_titles_from_csv(file_path)
+  token = get_bearer_token()
+  articles = []
 
-     for title in tqdm(titles, total=len(titles), desc="Downloading and cleaning Wikipedia articles"):
-         items = fetch_article(title, token)
-         if not items or not isinstance(items, list):
-            continue
+  for title in tqdm(titles, total=len(titles), desc="Downloading and cleaning Wikipedia articles"):
+    items = fetch_article(title, token)
+    if not items or not isinstance(items, list):
+      continue
 
-         article = items[0] # We only want the first article
-         if 'article_sections' in article :
-            cleaned_text = clean_text(article['article_sections'])
-            articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
+    article = items[0] # We only want the first article
+    if 'article_sections' in article :
+      cleaned_text = clean_text(article['article_sections'])
+      articles.append((article['identifier'], article['url'], article['name'], cleaned_text))
 
-     # Save to CSV
-     save_to_csv(articles, output_file_path)
+  # Save to CSV
+  save_to_csv(articles, output_file_path)
 
 
 def pipelineV2(file_path, output_file_path):
