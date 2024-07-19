@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Query with args",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/query.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--db",
+                "--text",
+                "Tell me the name and date of birth of a German natural scientist and a pioneer in geophysics"
+            ]
+        }
+    ]
+}

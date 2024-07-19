@@ -1,0 +1,8 @@
+/db/data
+/myenv
+.env
+/.venv
+/dataset/en2.csv
+/dataset/en3.csv
+
+

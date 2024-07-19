@@ -1,0 +1,9 @@
+chromadb==0.4.24
+ollama==0.1.8
+pandas==2.0.0
+tqdm==4.65.0
+streamlit==1.33.0
+watchdog==4.0.0
+beautifulsoup4==4.8.2
+lxml==5.2.1
+
