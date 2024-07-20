@@ -56,11 +56,11 @@ def query(prompt, db):
       # Print the query results
       print("\nRelevant documents...")
       for i in range(len(docs)):
-          # Only use articles that are within 80% of the most relevant article
-          if scores[i] < 0.8:
-              break
-          print(f"{ids[i]}  Similarity: {scores[i]:.2f}")
-          context += " " + docs[i]
+        # Only use articles that are within 80% of the most relevant article
+        if scores[i] < 0.8:
+          break
+        print(f"{ids[i]}  Similarity: {scores[i]:.2f}")
+        context += " " + docs[i]
 
   # generate a response combining the prompt and data we retrieved from ChromaDB query
   output = ollama.generate(
@@ -90,7 +90,7 @@ def query(prompt, db):
 #-------Part 3: Streamlit Web Chat -------
 def main():
   # Page configuration
-  st.set_page_config(page_title="Wikipedia Enterprise - Sample Dataset RAG", layout="wide")
+  st.set_page_config(page_title="Wikipedia Enterprise - Sample Dataset RAG")
 
   # Create containers
   header = st.container()
@@ -99,17 +99,17 @@ def main():
   with header:
     st.title("Chat with Wikipedia Dataset")
 
-  user_input = st.text_area("Question", height=150)
+  user_input = st.text_area("Ask a Question (prompt)", height=150)
 
   # Checkbox for the user to decide if they want to use the database
-  use_db = st.checkbox("Assisted by Wikipedia")
+  use_db = st.checkbox("Enable RAG assist by demo Wikipedia corpus")
 
   # Initialize chat history if it's not already in the session state
   if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = ""
 
   # If the user clicks the "Ask" button and the user input is not empty
-  if st.button("Ask"):
+  if st.button("Ask the model"):
     if user_input:
       # Get the response from your query function
       response = query(user_input, use_db)
@@ -118,9 +118,9 @@ def main():
       st.session_state.chat_history = f"{user_input}\n\n{response}\n\n" + "-"*46 + "\n\n" + st.session_state.chat_history
 
   # Display the updated chat history
-  st.text_area("Reply", value=st.session_state.chat_history, height=500, disabled=True)
+  st.text_area("Model Resonse", value=st.session_state.chat_history, height=500, disabled=True)
 
-  if st.button("Clear"):
+  if st.button("Clear chat"):
     st.session_state['chat_history'] = ""
 
 if __name__ == "__main__":
