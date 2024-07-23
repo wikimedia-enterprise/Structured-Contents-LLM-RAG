@@ -10,12 +10,12 @@ Requirements:
 
 - As of March 2024, **mxbai-embed-large** model archives SOTA performance for Bert-large sized models on the MTEB. It outperforms commercial models like OpenAIs `text-embedding-3-large` model and matches the performance of model 20x its size.
 - **Llama 3** (8B) instruction-tuned models are fine-tuned and optimized for dialogue/chat use cases and outperform many of the available open-source chat models on common benchmarks.
-- Bonus, if you have a powerful laptop/desktop you might want to swap llama3 8 billion parameter model for the LLama3 70 billion parameter, which has beeter inference and more internal knowledge. To use 70 instead of 8B use this command `ollama run llama3:70b`, note this is a 40GB download. Also, you'd need to change the line of code in `query.py` that loads the `llama3` model to: `model="llama3:70b"`
+- Bonus, if you have a powerful laptop/desktop you might want to swap Llama3 8 billion parameter model for the Llama3 70 billion parameter, which has better inference and more internal knowledge. To use 70B instead use this command `ollama run llama3:70b` (note this is a 40GB download), and change [the line of code in query.py](https://github.com/wikimedia-enterprise/Structured-Contents-LLM-RAG/blob/main/query.py#L67) that loads the `llama3` model to: `model="llama3:70b"`
 
-In a terminal console, type _(Warning, llama3 is a 4.5GB download and mxbai-embed-large is 670MB)_:
+In a terminal console, type _(Warning, llama3 is a 4.7GB download and mxbai-embed-large is 670MB)_:
 ```
 ollama pull mxbai-embed-large
-ollama pull llama3
+ollama run llama3
 ```
 
 3. Verify that Ollama is working and using the model, the output should be a JSON object with an `embedding` array of floating point numbers
