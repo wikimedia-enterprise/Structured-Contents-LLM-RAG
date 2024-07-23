@@ -80,28 +80,28 @@ ollama rm llama3
 
 ## Here are some example chats with RAG turned OFF and then ON:
 
-### Joe that does icosathlon - RAF OFF
+### Joe that does icosathlon - RAG OFF
 !["Joe that does icosathlon" with RAG off](./images/Joe_that_does_icosathlon-off.png)
 ### Joe that does icosathlon - RAG ON
 !["Joe that does icosathlon" with RAG on ](./images/Joe_that_does_icosathlon.png)
 
 
-### Wlassifoff - RAF OFF
+### Wlassifoff - RAG OFF
 !["Wlassifoff" with RAG off](./images/Wlassikoff-off.png)
 ### Wlassifoff - RAG ON
 !["Wlassifoff" with RAG on ](./images/Wlassikoff.png)
 
-### Newala Town - RAF OFF
+### Newala Town - RAG OFF
 !["Newala Town" with RAG off](./images/NewalaTown-off.png)
 ### Newala Town - RAG ON
 !["Newala Town" with RAG on ](./images/NewalaTown.png)
 
-### horse breeds of the British Isles - RAF OFF
+### horse breeds of the British Isles - RAG OFF
 !["horse breeds of the British Isles" with RAG off](./images/horse_breeds_of_the_British_Isles-off.png)
 ### horse breeds of the British Isles - RAG ON
 !["horse breeds of the British Isles" with RAG on ](./images/horse_breeds_of_the_British_Isles.png)
 
-### Chow a shooter - RAF OFF
+### Chow a shooter - RAG OFF
 !["Chow a shooter" with RAG off](./images/Chow_a_shooter-off.png)
 ### Chow a shooter - RAG ON
 !["Chow a shooter" with RAG on ](./images/Chow_a_shooter.png)
