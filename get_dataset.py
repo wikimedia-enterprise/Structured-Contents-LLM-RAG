@@ -149,8 +149,8 @@ if __name__ == '__main__':
 
   # Properly join paths with the directory path
   inputFile = os.path.join(dir_path, 'dataset', 'titles_en.csv')
-  outputV1 = os.path.join(dir_path, 'dataset', 'en2.csv')
-  outputV2 = os.path.join(dir_path, 'dataset', 'en3.csv')
+  outputV1 = os.path.join(dir_path, 'dataset', 'en_data.csv')
+  outputV2 = os.path.join(dir_path, 'dataset', 'en_data.csv')
 
   # Run the pipeline sequentially
   #pipelineV1(inputFile, outputV1)  # 1 thread took 9 minutes

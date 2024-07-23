@@ -3,8 +3,15 @@ import chromadb
 import ollama
 from tqdm import tqdm
 
-# Load the data from CSV file
-df = pd.read_csv('dataset/en.csv', header=None)
+# Load the data from a CSV file
+# Check for the existence of 'data_path.csv' or fallback to 'en_sample.csv' if not found
+data_path = 'dataset/en_data.csv'
+data_fallback_path = 'dataset/en_sample.csv'
+
+if os.path.exists(data_path):
+  df = pd.read_csv(data_path, header=None)
+else:
+  df = pd.read_csv(data_fallback_path, header=None)
 
 # Set column names for better readability
 df.columns = ['id', 'url', 'title', 'document']

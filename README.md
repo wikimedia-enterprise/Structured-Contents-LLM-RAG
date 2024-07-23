@@ -44,7 +44,7 @@ WIKI_API_USERNAME=username
 WIKI_API_PASSWORD=password
 ```
 Notes:
-- You can skip this next step if you have a slow internet connection and instead use the `/dataset/en.csv` file that has the structured Wikipedia data ready to use in Step 7.
+- You can skip this next step if you have a slow internet connection and instead use the `/dataset/en_sample.csv` file that has the structured Wikipedia data ready to use in Step 7.
 
 7. Review the Python in `get_dataset.py` which calls the Wikipedia Enterprise On-Demand API for 500 English articles. You can run it with the command:
 ```
@@ -52,8 +52,8 @@ python get_dataset.py
 ```
 Notes:
 - In `get_dataset.py`, we are using multithreading to download the dataset, using your CPU Cores to send many requests at one. If you prefer to keep it simple, we have a less complex downloader that downloads the data in sequence, but it takes considerable longer. See the code in `pipelineV1()` and `pipelineV2()`, the first function runs sequentially, the second runs in parallel. Notice we are using thread locking to guarantee that the array is appended without a race condition.
-- If you want to use you newly downloaded data rather than the sample dataset in `en.csv`, then rename the file `dataset/en3.csv` (or `dataset/en2.csv` if you ran the sequential pipeline) to `dataset/en.csv`
-- One important function in this code is `clean_text()` which parses the HTML tags and extracts the plain text that the LLM model is expecting. Data tidying is a big part of the Machine Learning workflow. Review the code in `clean_text()` so you can understand the text cleaning steps.
+- The script will first check if you've downloaded new data but will fallback to using sample data if not.
+- One important function in this code is `clean_text()` which parses the HTML tags and extracts the plain text that the LLM model is expecting. Data tidying is a big part of the Machine Learning workflow. Review the code in `clean_text()` as you may want to understand the text cleaning steps.
 - Wikimedia Enterprise has a number of added-value APIs, that give developers easier access to cleaned Wikimedia data. You don't need to be a Data Scientist or AI expert to integrate Wikipedia/Wikidata knowledge into your systems. Visit our [developer documentation portal](https://enterprise.wikimedia.com/docs/) for more API info. 
 
 9. Review the Python in `import.py` which imports the CSV data from step 6 and load it into ChromaDB. Then run it:
