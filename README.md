@@ -46,7 +46,7 @@ WIKI_API_PASSWORD=password
 Notes:
 - You can skip this next step if you have a slow internet connection and instead use the `/dataset/en_sample.csv` file that has the structured Wikipedia data ready to use in Step 7.
 
-7. Review the Python in `get_dataset.py` which calls the Wikipedia Enterprise On-Demand API for 500 English articles. You can run it with the command:
+7. Review the Python in `get_dataset.py` which calls the Wikipedia Enterprise On-Demand API for 500 English articles. We're using our [Structured Contents endpoint](https://enterprise.wikimedia.com/docs/on-demand/#article-structured-contents-beta) that has pre-parsed article body sections to cleanly obtain data without extra parsing. You can run that process with this command:
 ```
 python get_dataset.py
 ```
