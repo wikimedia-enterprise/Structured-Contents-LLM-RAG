@@ -1,22 +1,21 @@
-Steps initially derived from https://ollama.com/blog/embedding-models
-
 Requirements:
+- Ollama: https://ollama.com/download
 - Python 3: https://www.python.org/downloads/
 - cURL: https://curl.se/download.html
 
 1. Download and install Ollama and follow the quick setup instructions: https://ollama.com/download
 
 2. Download the models `mxbai` and `llama3`.
-
-- As of March 2024, **mxbai-embed-large** model archives SOTA performance for Bert-large sized models on the MTEB. It outperforms commercial models like OpenAIs `text-embedding-3-large` model and matches the performance of model 20x its size.
-- **Llama 3** (8B) instruction-tuned models are fine-tuned and optimized for dialogue/chat use cases and outperform many of the available open-source chat models on common benchmarks.
-- Bonus, if you have a powerful laptop/desktop you might want to swap Llama3 8 billion parameter model for the Llama3 70 billion parameter, which has better inference and more internal knowledge. To use 70B instead use this command `ollama run llama3:70b` (note this is a 40GB download), and change [the line of code in query.py](https://github.com/wikimedia-enterprise/Structured-Contents-LLM-RAG/blob/main/query.py#L67) that loads the `llama3` model to: `model="llama3:70b"`
-
 In a terminal console, type _(Warning, llama3 is a 4.7GB download and mxbai-embed-large is 670MB)_:
 ```
 ollama pull mxbai-embed-large
 ollama run llama3
 ```
+Notes:
+- As of March 2024, **mxbai-embed-large** model archives SOTA performance for Bert-large sized models on the MTEB. It outperforms commercial models like OpenAIs `text-embedding-3-large` model and matches the performance of model 20x its size.
+- **Llama 3** (8B) instruction-tuned models are fine-tuned and optimized for dialogue/chat use cases and outperform many of the available open-source chat models on common benchmarks.
+- Bonus, if you have a powerful laptop/desktop you might want to swap Llama3 8 billion parameter model for the Llama3 70 billion parameter, which has better inference and more internal knowledge. To use 70B instead use this command `ollama run llama3:70b` (note this is a 40GB download), and change [the line of code in query.py](https://github.com/wikimedia-enterprise/Structured-Contents-LLM-RAG/blob/main/query.py#L67) that loads the `llama3` model to: `model="llama3:70b"`
+
 
 3. Verify that Ollama is working and using the model, the output should be a JSON object with an `embedding` array of floating point numbers
 ```
@@ -51,7 +50,6 @@ Notes:
 ```
 python get_dataset.py
 ```
-
 Notes:
 - In `get_dataset.py`, we are using multithreading to download the dataset, using your CPU Cores to send many requests at one. If you prefer to keep it simple, we have a less complex downloader that downloads the data in sequence, but it takes considerable longer. See the code in `pipelineV1()` and `pipelineV2()`, the first function runs sequentially, the second runs in parallel. Notice we are using thread locking to guarantee that the array is appended without a race condition.
 - If you want to use you newly downloaded data rather than the sample dataset in `en.csv`, then rename the file `dataset/en3.csv` (or `dataset/en2.csv` if you ran the sequential pipeline) to `dataset/en.csv`
@@ -75,7 +73,6 @@ docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-
 ```
 
 11. You can safely delete all the code and data in this project, there are no other dependencies. You may wish to uninstall Ollama and the LLM models you downloaded. Use these commands:
-
 ```
 ollama rm mxbai-embed-large
 ollama rm llama3
@@ -108,3 +105,6 @@ ollama rm llama3
 !["Chow a shooter" with RAG off](./images/Chow_a_shooter-off.png)
 ### Chow a shooter - RAG ON
 !["Chow a shooter" with RAG on ](./images/Chow_a_shooter.png)
+
+
+Steps initially derived from https://ollama.com/blog/embedding-models
