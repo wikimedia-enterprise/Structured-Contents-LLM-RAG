@@ -5,16 +5,16 @@ Requirements:
 
 1. Download and install Ollama and follow the quick setup instructions: https://ollama.com/download
 
-2. Download the models `mxbai` and `llama3`.
-In a terminal console, type _(Warning, llama3 is a 4.7GB download and mxbai-embed-large is 670MB)_:
+2. Download the models `mxbai` and `llama3.1`.
+In a terminal console, type _(Warning, llama3.1 is a 4.7GB download and mxbai-embed-large is 670MB)_:
 ```
+ollama run llama3.1
 ollama pull mxbai-embed-large
-ollama run llama3
 ```
 Notes:
 - As of March 2024, **mxbai-embed-large** model archives SOTA performance for Bert-large sized models on the MTEB. It outperforms commercial models like OpenAIs `text-embedding-3-large` model and matches the performance of model 20x its size.
-- **Llama 3** (8B) instruction-tuned models are fine-tuned and optimized for dialogue/chat use cases and outperform many of the available open-source chat models on common benchmarks.
-- Bonus, if you have a powerful laptop/desktop you might want to swap Llama3 8 billion parameter model for the Llama3 70 billion parameter, which has better inference and more internal knowledge. To use 70B instead use this command `ollama run llama3:70b` (note this is a 40GB download), and change [the line of code in query.py](https://github.com/wikimedia-enterprise/Structured-Contents-LLM-RAG/blob/main/query.py#L67) that loads the `llama3` model to: `model="llama3:70b"`
+- **Llama 3.1** (8B) instruction-tuned models are fine-tuned and optimized for dialogue/chat use cases and outperform many of the available open-source chat models on common benchmarks.
+- Bonus, if you have a powerful laptop/desktop you might want to swap Llama3.1 8 billion parameter model for the Llama3.1 70 billion parameter, which has better inference and more internal knowledge. To use 70B instead use this command `ollama run llama3.1:70b` (note this is a 40GB download), and change [the line of code in query.py](https://github.com/wikimedia-enterprise/Structured-Contents-LLM-RAG/blob/main/query.py#L67) that loads the `llama3.1` model to: `model="llama3.1:70b"`
 
 
 3. Verify that Ollama is working and using the model, the output should be a JSON object with an `embedding` array of floating point numbers

@@ -64,7 +64,7 @@ def query(prompt, db):
 
   # generate a response combining the prompt and data we retrieved from ChromaDB query
   output = ollama.generate(
-    model="llama3",
+    model="llama3.1:8b",
     prompt=f"Review all of this knowledge and combine it with your existing knowledge about the subject of the prompt, use as much of this knowledge as possible in your response: {context}. Respond to this prompt, first give a one sentence summary with 3 bullet points, and then a detailed answer with full context: {prompt}"
   )
 
