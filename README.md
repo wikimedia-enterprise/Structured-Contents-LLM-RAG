@@ -56,12 +56,12 @@ Notes:
 - One important function in this code is `clean_text()` which parses the HTML tags and extracts the plain text that the LLM model is expecting. Data tidying is a big part of the Machine Learning workflow. Review the code in `clean_text()` as you may want to understand the text cleaning steps.
 - Wikimedia Enterprise has a number of added-value APIs, that give developers easier access to cleaned Wikimedia data. You don't need to be a Data Scientist or AI expert to integrate Wikipedia/Wikidata knowledge into your systems. Visit our [developer documentation portal](https://enterprise.wikimedia.com/docs/) for more API info. 
 
-9. Review the Python in `import.py` which imports the CSV data from step 6 and load it into ChromaDB. Then run it:
+8. Review the Python in `import.py` which imports the CSV data from step 7 and load it into ChromaDB. Then run it:
 ```
 python import.py
 ```
 
-10. Review the Python in `query.py` to input your query, query ChromaDB, get the relevant articles and pass it to Llama3 for generating the response.
+9. Review the Python in `query.py` to input your query, query ChromaDB, get the relevant articles and pass it to Llama3 for generating the response.
 Run the Streamlit Web UI with:
 ```
 streamlit run query.py
@@ -72,7 +72,7 @@ Notes:
 docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
 
-11. You can safely delete all the code and data in this project, there are no other dependencies. You may wish to uninstall Ollama and the LLM models you downloaded. Use these commands:
+10. You can safely delete all the code and data in this project, there are no other dependencies. You may wish to uninstall Ollama and the LLM models you downloaded. Use these commands:
 ```
 ollama rm mxbai-embed-large
 ollama rm llama3
