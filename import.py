@@ -2,6 +2,7 @@ import pandas as pd
 import chromadb
 import ollama
 from tqdm import tqdm
+import os
 
 # Load the data from a CSV file
 # Check for the existence of 'data_path.csv' or fallback to 'en_sample.csv' if not found
