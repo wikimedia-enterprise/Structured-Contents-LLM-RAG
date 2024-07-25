@@ -1,3 +1,5 @@
+# [Live Article on Enterprise Blog here](https://enterprise.wikimedia.com/blog/build-rag-llm-wikimedia-enterprise-api/)
+
 Requirements:
 - Ollama: https://ollama.com/download
 - Python 3: https://www.python.org/downloads/
